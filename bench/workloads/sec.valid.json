@@ -1,0 +1,105 @@
+{
+  "CVE-2021-3281": {
+    "ok": false,
+    "why": "reference fix: poc exit 1, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2018-20834": {
+    "ok": true,
+    "why": "reference fix: poc exit 0, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2019-10787": {
+    "ok": false,
+    "why": "reference fix: poc exit 1, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2020-4053": {
+    "ok": true,
+    "why": "reference fix: poc exit 0, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2021-31542": {
+    "ok": false,
+    "why": "reference fix: poc exit 1, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2021-32803": {
+    "ok": true,
+    "why": "reference fix: poc exit 0, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2019-10788": {
+    "ok": true,
+    "why": "reference fix: poc exit 0, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2020-29529": {
+    "ok": true,
+    "why": "reference fix: poc exit 0, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2021-33203": {
+    "ok": true,
+    "why": "reference fix: poc exit 0, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2021-32804": {
+    "ok": true,
+    "why": "reference fix: poc exit 0, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2020-7613": {
+    "ok": false,
+    "why": "reference fix: poc exit 0, unit exit 128",
+    "gold_touches_tests": []
+  },
+  "CVE-2021-29417": {
+    "ok": true,
+    "why": "reference fix: poc exit 0, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2021-45452": {
+    "ok": true,
+    "why": "reference fix: poc exit 0, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2021-37712": {
+    "ok": true,
+    "why": "reference fix: poc exit 0, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2020-7795": {
+    "ok": false,
+    "why": "reference fix: poc exit 0, unit exit 1",
+    "gold_touches_tests": []
+  },
+  "CVE-2024-10220": {
+    "ok": true,
+    "why": "reference fix: poc exit 0, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2024-39330": {
+    "ok": true,
+    "why": "reference fix: poc exit 0, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2021-37713": {
+    "ok": true,
+    "why": "reference fix: poc exit 0, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2021-23363": {
+    "ok": true,
+    "why": "reference fix: poc exit 0, unit exit 0",
+    "gold_touches_tests": []
+  },
+  "CVE-2024-25620": {
+    "ok": true,
+    "why": "reference fix: poc exit 0, unit exit 0",
+    "gold_touches_tests": [
+      "pkg/lint/rules/testdata/badchartname/Chart.yaml",
+      "pkg/lint/rules/testdata/badchartname/values.yaml"
+    ]
+  }
+}
