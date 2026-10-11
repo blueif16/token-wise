@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "test": "node --test \"tracing/test/**/*.test.mjs\"",
+    "bench:test": "node --test \"bench/test/**/*.test.mjs\"",
     "prepare": "git config core.hooksPath .githooks",
     "trace:schema": "node tracing/apply-schema.mjs",
     "trace:webhook": "node tracing/apply-webhook.mjs",

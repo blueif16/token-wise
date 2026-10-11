@@ -1,0 +1,304 @@
+[
+ {
+  "pos": 1,
+  "cve": "CVE-2021-3281",
+  "cluster": "A django-pathtrav (Py, same repo+CWE)",
+  "repo": "django/django",
+  "lang": "Python",
+  "cwe": [
+   "CWE-73",
+   "CWE-22"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2021-3281",
+  "workdir": "/workspace/django",
+  "compressed_mb": 457,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 2,
+  "cve": "CVE-2018-20834",
+  "cluster": "B node-tar (JS, same repo+CWE)",
+  "repo": "isaacs/node-tar",
+  "lang": "JavaScript",
+  "cwe": [
+   "CWE-59"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2018-20834",
+  "workdir": "/workspace/node-tar",
+  "compressed_mb": 428,
+  "has_unit_test_in_dataset": false
+ },
+ {
+  "pos": 3,
+  "cve": "CVE-2019-10787",
+  "cluster": "C JS cmd-injection (cross-repo idiom)",
+  "repo": "Turistforeningen/node-im-resize",
+  "lang": "JavaScript",
+  "cwe": [
+   "CWE-94",
+   "CWE-77",
+   "CWE-78"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2019-10787",
+  "workdir": "/workspace/node-im-resize",
+  "compressed_mb": 490,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 4,
+  "cve": "CVE-2020-4053",
+  "cluster": "D Go path-trav (cross-repo + helm pair)",
+  "repo": "helm/helm",
+  "lang": "Go",
+  "cwe": [
+   "CWE-73",
+   "CWE-22"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2020-4053",
+  "workdir": "/workspace/helm",
+  "compressed_mb": 504,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 5,
+  "cve": "CVE-2021-31542",
+  "cluster": "A django-pathtrav (Py, same repo+CWE)",
+  "repo": "django/django",
+  "lang": "Python",
+  "cwe": [
+   "CWE-73",
+   "CWE-22"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2021-31542",
+  "workdir": "/workspace/django",
+  "compressed_mb": 453,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 6,
+  "cve": "CVE-2021-32803",
+  "cluster": "B node-tar (JS, same repo+CWE)",
+  "repo": "isaacs/node-tar",
+  "lang": "JavaScript",
+  "cwe": [
+   "CWE-59"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2021-32803",
+  "workdir": "/workspace/node-tar",
+  "compressed_mb": 459,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 7,
+  "cve": "CVE-2019-10788",
+  "cluster": "C JS cmd-injection (cross-repo idiom)",
+  "repo": "Turistforeningen/node-im-metadata",
+  "lang": "JavaScript",
+  "cwe": [
+   "CWE-94",
+   "CWE-77",
+   "CWE-78"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2019-10788",
+  "workdir": "/workspace/node-im-metadata",
+  "compressed_mb": 442,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 8,
+  "cve": "CVE-2020-29529",
+  "cluster": "D Go path-trav (cross-repo + helm pair)",
+  "repo": "hashicorp/go-slug",
+  "lang": "Go",
+  "cwe": [
+   "CWE-73",
+   "CWE-22"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2020-29529",
+  "workdir": "/workspace/go-slug",
+  "compressed_mb": 401,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 9,
+  "cve": "CVE-2021-33203",
+  "cluster": "A django-pathtrav (Py, same repo+CWE)",
+  "repo": "django/django",
+  "lang": "Python",
+  "cwe": [
+   "CWE-73",
+   "CWE-22"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2021-33203",
+  "workdir": "/workspace/django",
+  "compressed_mb": 438,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 10,
+  "cve": "CVE-2021-32804",
+  "cluster": "B node-tar (JS, same repo+CWE)",
+  "repo": "isaacs/node-tar",
+  "lang": "JavaScript",
+  "cwe": [
+   "CWE-73",
+   "CWE-22"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2021-32804",
+  "workdir": "/workspace/node-tar",
+  "compressed_mb": 464,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 11,
+  "cve": "CVE-2020-7613",
+  "cluster": "C JS cmd-injection (cross-repo idiom)",
+  "repo": "kylefarris/clamscan",
+  "lang": "JavaScript",
+  "cwe": [
+   "CWE-94",
+   "CWE-77",
+   "CWE-78"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2020-7613",
+  "workdir": "/workspace/clamscan",
+  "compressed_mb": 460,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 12,
+  "cve": "CVE-2021-29417",
+  "cluster": "D Go path-trav (cross-repo + helm pair)",
+  "repo": "liamg/gitjacker",
+  "lang": "Go",
+  "cwe": [
+   "CWE-22"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2021-29417",
+  "workdir": "/workspace/gitjacker",
+  "compressed_mb": 413,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 13,
+  "cve": "CVE-2021-45452",
+  "cluster": "A django-pathtrav (Py, same repo+CWE)",
+  "repo": "django/django",
+  "lang": "Python",
+  "cwe": [
+   "CWE-73",
+   "CWE-22"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2021-45452",
+  "workdir": "/workspace/django",
+  "compressed_mb": 454,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 14,
+  "cve": "CVE-2021-37712",
+  "cluster": "B node-tar (JS, same repo+CWE)",
+  "repo": "isaacs/node-tar",
+  "lang": "JavaScript",
+  "cwe": [
+   "CWE-73",
+   "CWE-22"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2021-37712",
+  "workdir": "/workspace/node-tar",
+  "compressed_mb": 459,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 15,
+  "cve": "CVE-2020-7795",
+  "cluster": "C JS cmd-injection (cross-repo idiom)",
+  "repo": "hoperyy/get-npm-package-version",
+  "lang": "JavaScript",
+  "cwe": [
+   "CWE-94",
+   "CWE-77",
+   "CWE-78"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2020-7795",
+  "workdir": "/workspace/get-npm-package-version",
+  "compressed_mb": 433,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 16,
+  "cve": "CVE-2024-10220",
+  "cluster": "D Go path-trav (cross-repo + helm pair)",
+  "repo": "kubernetes/kubernetes",
+  "lang": "Go",
+  "cwe": [
+   "CWE-73",
+   "CWE-22"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2024-10220",
+  "workdir": "/workspace/kubernetes",
+  "compressed_mb": 509,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 17,
+  "cve": "CVE-2024-39330",
+  "cluster": "A django-pathtrav (Py, same repo+CWE)",
+  "repo": "django/django",
+  "lang": "Python",
+  "cwe": [
+   "CWE-73",
+   "CWE-22"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2024-39330",
+  "workdir": "/workspace/django",
+  "compressed_mb": 466,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 18,
+  "cve": "CVE-2021-37713",
+  "cluster": "B node-tar (JS, same repo+CWE)",
+  "repo": "isaacs/node-tar",
+  "lang": "JavaScript",
+  "cwe": [
+   "CWE-73",
+   "CWE-22"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2021-37713",
+  "workdir": "/workspace/node-tar",
+  "compressed_mb": 459,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 19,
+  "cve": "CVE-2021-23363",
+  "cluster": "C JS cmd-injection (cross-repo idiom)",
+  "repo": "GuyMograbi/kill-by-port",
+  "lang": "JavaScript",
+  "cwe": [
+   "CWE-94",
+   "CWE-77",
+   "CWE-78"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2021-23363",
+  "workdir": "/workspace/kill-by-port",
+  "compressed_mb": 433,
+  "has_unit_test_in_dataset": true
+ },
+ {
+  "pos": 20,
+  "cve": "CVE-2024-25620",
+  "cluster": "D Go path-trav (cross-repo + helm pair)",
+  "repo": "helm/helm",
+  "lang": "Go",
+  "cwe": [
+   "CWE-73",
+   "CWE-22"
+  ],
+  "image": "ghcr.io/patcheval-cve/patcheval-cve:cve-2024-25620",
+  "workdir": "/workspace/helm",
+  "compressed_mb": 632,
+  "has_unit_test_in_dataset": true
+ }
+]
