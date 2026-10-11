@@ -14,6 +14,11 @@ const runs = (existsSync(ROOT) ? readdirSync(ROOT) : []).map((id) => {
   const rows = readFileSync(f, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)).sort((x, y) => x.position - y.position);
   const lessonsFile = join(ROOT, id, 'lessons.json');
   const lessons = existsSync(lessonsFile) ? JSON.parse(readFileSync(lessonsFile, 'utf8')) : [];
+  // Lookups that failed (memory unreachable) are counted from the traces, so an outage is visible.
+  for (const r of rows) {
+    const trace = join(ROOT, id, 'tasks', r.task.replace(/[^\w.-]/g, '_'), 'trace.jsonl');
+    r.lookup_errors = existsSync(trace) ? (readFileSync(trace, 'utf8').match(/"kind":"lookup_error"/g) || []).length : 0;
+  }
   return rows.length ? { id, rows, lessons } : null;
 }).filter((r) => r && (!a.workload || r.rows[0].workload === a.workload));
 
@@ -45,6 +50,7 @@ function summarise(run) {
     est_cost_usd: run.rows.reduce((s, r) => s + (r.cost_usd || 0), 0),
     tampered: run.rows.filter((r) => r.tampered).length,
     tasks_with_injection: mean(run.rows.map((r) => +(r.injected.length > 0))),
+    lookup_errors: run.rows.reduce((n, r) => n + r.lookup_errors, 0),
     lessons_stored: run.lessons.length,
     lessons_rejected_by_gate: rejected.length,
     lessons_retired: run.lessons.filter((l) => l.status === 'retired').length,
@@ -68,9 +74,9 @@ const out = runs.map((r) => ({ ...summarise(r), ...paired(r) }));
 if (a.json) {
   console.log(JSON.stringify(out, null, 2));
 } else {
-  console.log('| run | tasks | pass | pass 2nd half | failed calls/task | repeat failures/task | repeat share | min/task | tampered | lessons (stored/rejected/retired) | wins/losses vs off |');
-  console.log('|---|---|---|---|---|---|---|---|---|---|---|');
+  console.log('| run | tasks | pass | pass 2nd half | failed calls/task | repeat failures/task | repeat share | min/task | tampered | lookups failed | lessons (stored/rejected/retired) | wins/losses vs off |');
+  console.log('|---|---|---|---|---|---|---|---|---|---|---|---|');
   for (const s of out) {
-    console.log(`| ${s.run} | ${s.tasks} | ${pct(s.pass_rate)} | ${pct(s.pass_rate_second_half)} | ${s.failed_calls_per_task.toFixed(1)} | ${s.repeat_failures_per_task.toFixed(1)} | ${pct(s.repeat_share)} | ${s.minutes_per_task.toFixed(1)} | ${s.tampered} | ${s.lessons_stored}/${s.lessons_rejected_by_gate}/${s.lessons_retired} | ${s.wins ? `${s.wins.length}/${s.losses.length}` : '—'} |`);
+    console.log(`| ${s.run} | ${s.tasks} | ${pct(s.pass_rate)} | ${pct(s.pass_rate_second_half)} | ${s.failed_calls_per_task.toFixed(1)} | ${s.repeat_failures_per_task.toFixed(1)} | ${pct(s.repeat_share)} | ${s.minutes_per_task.toFixed(1)} | ${s.tampered} | ${s.lookup_errors} | ${s.lessons_stored}/${s.lessons_rejected_by_gate}/${s.lessons_retired} | ${s.wins ? `${s.wins.length}/${s.losses.length}` : '—'} |`);
   }
 }

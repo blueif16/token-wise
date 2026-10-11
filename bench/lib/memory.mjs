@@ -88,7 +88,7 @@ export function storeLesson(lesson, folderId, { wait = 120_000 } = {}) {
 export function searchLessons(query, contentIds, { max = 3 } = {}) {
   if (!contentIds.length) return [];
   const res = senso(['search', 'context', query.slice(0, 600), '--content-ids', ...contentIds,
-    '--require-scoped-ids', '--no-gap-signals', '--max-results', String(max)], { timeout: 30_000, retries: 1 });
+    '--require-scoped-ids', '--no-gap-signals', '--max-results', String(max)], { timeout: 30_000, retries: 2 });
   const seen = new Set();
   return (res.results || []).filter((r) => !seen.has(r.content_id) && seen.add(r.content_id))
     .map((r) => ({ content_id: r.content_id, score: r.score, text: r.chunk_text }));

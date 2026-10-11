@@ -43,7 +43,7 @@ function lessonsFor(query) {
 
 function inject(hits, why) {
   if (!hits.length) return;
-  trace({ kind: 'inject', why, lesson_ids: hits.map((h) => h.id), content_ids: hits.map((h) => h.content_id) });
+  trace({ kind: 'inject', why, lesson_ids: hits.map((h) => h.id), content_ids: hits.map((h) => h.content_id), scores: hits.map((h) => h.score) });
   reply({
     additionalContext: 'Team memory: lessons other agents on this team learned on earlier tasks. '
       + 'Use them if they fit; check before relying on them.\n\n' + hits.map((h) => h.text).join('\n\n---\n\n'),
@@ -56,9 +56,14 @@ if (event === 'PreToolUse' && input.tool_name === 'Bash') {
   // Bash state does not persist between Claude Code calls, but the working directory does; keep that.
   const inner = `cd "$(cat /tmp/.bench_cwd 2>/dev/null || echo ${shq(env.BENCH_WORKDIR)})" 2>/dev/null\n`
     + `${input.tool_input.command}\n__rc=$?; pwd > /tmp/.bench_cwd; exit $__rc`;
+  // Background runs write their output to a file on the host, which the agent (working in the
+  // container) cannot read; run them in the foreground with the longest timeout instead.
+  const bg = input.tool_input.run_in_background
+    ? { run_in_background: false, timeout: Math.max(input.tool_input.timeout || 0, 600_000) } : {};
+  if (bg.timeout) trace({ kind: 'foregrounded', command: input.tool_input.command.slice(0, 200) });
   reply({
     permissionDecision: 'allow',
-    updatedInput: { ...input.tool_input, command: `docker exec -i ${env.BENCH_CONTAINER} bash -lc ${shq(inner)}` },
+    updatedInput: { ...input.tool_input, ...bg, command: `docker exec -i ${env.BENCH_CONTAINER} bash -lc ${shq(inner)}` },
   });
 } else if (event === 'PreToolUse' && FILE_TOOLS[input.tool_name]) {
   const p = input.tool_input[FILE_TOOLS[input.tool_name]];

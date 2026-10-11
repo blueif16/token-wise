@@ -8,6 +8,27 @@ import { fileURLToPath } from 'node:url';
 const HOOK = fileURLToPath(new URL('../hooks/hook.mjs', import.meta.url));
 const LIMIT = /hit your (session|weekly) limit|usage limit/i;
 
+// One session can emit several result messages (each time the agent resumes). Turns, time and
+// tokens are per segment; cost is already a running total (measured 2026-10-11).
+export function totals(results) {
+  if (!results.length) return null;
+  const last = results.at(-1);
+  const sum = (f) => results.reduce((n, r) => n + (f(r) || 0), 0);
+  return {
+    ...last,
+    segments: results.length,
+    num_turns: sum((r) => r.num_turns),
+    duration_ms: sum((r) => r.duration_ms),
+    total_cost_usd: Math.max(...results.map((r) => r.total_cost_usd || 0)),
+    usage: {
+      input_tokens: sum((r) => r.usage?.input_tokens),
+      output_tokens: sum((r) => r.usage?.output_tokens),
+      cache_read_input_tokens: sum((r) => r.usage?.cache_read_input_tokens),
+      cache_creation_input_tokens: sum((r) => r.usage?.cache_creation_input_tokens),
+    },
+  };
+}
+
 export function hookSettings(path) {
   const cmd = { type: 'command', command: `node ${HOOK}`, timeout: 60 };
   writeFileSync(path, JSON.stringify({
@@ -44,16 +65,18 @@ export function runAgent(o) {
     let stderr = '';
     child.stdout.pipe(out);
     child.stderr.on('data', (d) => { stderr += d; });
-    const timer = setTimeout(() => child.kill('SIGTERM'), o.timeoutMs);
-    child.on('close', (code, sig) => {
+    // Claude exits cleanly on SIGTERM, so the timeout is known from our own flag, not the signal.
+    let timedOut = false;
+    const timer = setTimeout(() => { timedOut = true; child.kill('SIGTERM'); }, o.timeoutMs);
+    child.on('close', (code) => {
       clearTimeout(timer);
       out.end(() => {
         const rows = readFileSync(o.logFile, 'utf8').split('\n').filter(Boolean).map((l) => {
           try { return JSON.parse(l); } catch { return {}; }
         });
-        const result = rows.findLast((r) => r.type === 'result') || null;
+        const result = totals(rows.filter((r) => r.type === 'result'));
         const text = `${result?.result || ''}\n${(result?.errors || []).join('\n')}\n${stderr}`;
-        done({ exitCode: code, timedOut: sig === 'SIGTERM', limitHit: LIMIT.test(text), result, stderr: stderr.slice(-2000) });
+        done({ exitCode: code, timedOut, limitHit: LIMIT.test(text), result, stderr: stderr.slice(-2000) });
       });
     });
   });

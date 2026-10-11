@@ -53,3 +53,13 @@ test('gated memory retires a lesson shown three times without a pass; ungated ke
     assert.equal(idx.retrievable(arm).length, arm === 'gated' ? 0 : 1);
   }
 });
+
+test('session totals add per-segment turns and time but take cost as the running total', async () => {
+  const { totals } = await import('../lib/agent.mjs');
+  const t = totals([
+    { type: 'result', num_turns: 10, duration_ms: 1000, total_cost_usd: 0.07, usage: { input_tokens: 20, output_tokens: 1600 } },
+    { type: 'result', num_turns: 0, duration_ms: 33, total_cost_usd: 0.07, usage: { input_tokens: 0, output_tokens: 0 } },
+    { type: 'result', num_turns: 2, duration_ms: 500, total_cost_usd: 0.09, usage: { input_tokens: 6, output_tokens: 400 }, result: 'done' },
+  ]);
+  assert.deepEqual([t.num_turns, t.duration_ms, t.total_cost_usd, t.segments, t.usage.output_tokens, t.result], [12, 1533, 0.09, 3, 2000, 'done']);
+});
