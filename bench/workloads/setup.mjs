@@ -2,7 +2,7 @@
 // Each task starts from a bare image; the official success_command decides pass/fail.
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import * as docker from '../lib/docker.mjs';
 
@@ -36,14 +36,26 @@ function scenarios() {
 function git(args, cwd) {
   const r = spawnSync('git', args, { cwd, encoding: 'utf8', timeout: 900_000 });
   if (r.status !== 0) throw new Error(`git ${args.join(' ')}: ${r.stderr.slice(-400)}`);
+  return r.stdout.trim();
 }
 
+// Two arms run the same task order side by side, so clones must appear in the cache all at once:
+// clone and check out in a private directory, then rename it into place.
 function cachedRepo(task) {
   const dir = join(REPOS, task.instance_id);
-  if (!existsSync(join(dir, '.git'))) {
+  if (!existsSync(dir)) {
     mkdirSync(REPOS, { recursive: true });
-    git(['clone', '--quiet', task.repo_url, dir]);
-    if (task.base_commit) git(['checkout', '--quiet', task.base_commit], dir);
+    const tmp = `${dir}.tmp-${process.pid}`;
+    git(['clone', '--quiet', task.repo_url, tmp]);
+    if (task.base_commit) git(['checkout', '--quiet', task.base_commit], tmp);
+    try {
+      renameSync(tmp, dir);
+    } catch (e) {
+      if (!existsSync(dir)) throw e;                     // the other arm finished first; use its clone
+    }
+  }
+  if (task.base_commit && git(['rev-parse', 'HEAD'], dir) !== task.base_commit) {
+    throw new Error(`${dir} is not at ${task.base_commit}`);
   }
   return dir;
 }
@@ -73,10 +85,18 @@ export default {
     return SETS[set].map((id) => ({ id, ...byId[id] }));
   },
 
+  // Clone every repo of the set before any agent starts.
+  async prefetch(tasks) {
+    for (const t of tasks.filter((x) => x.repo_url)) cachedRepo(t);
+  },
+
   async prepare(task, ctx) {
     const workdir = join(WORK, `${ctx.container}-${Date.now()}`, 'testbed');
     mkdirSync(workdir, { recursive: true });
-    if (task.repo_url) cpSync(cachedRepo(task), workdir, { recursive: true });
+    if (task.repo_url) {
+      cpSync(cachedRepo(task), workdir, { recursive: true });
+      if (task.base_commit && git(['rev-parse', 'HEAD'], workdir) !== task.base_commit) throw new Error(`workspace not at ${task.base_commit}`);
+    }
     const fixture = join(ROOT, 'fixtures', task.instance_id);
     if (existsSync(fixture)) cpSync(fixture, workdir, { recursive: true });
     writeFileSync(join(ctx.taskDir, 'tests.manifest.json'), JSON.stringify(testManifest(workdir)));

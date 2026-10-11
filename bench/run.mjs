@@ -49,6 +49,7 @@ const all = await adapter.tasks(a.set);
 const tasks = (adapter.order ? adapter.order(all, a.seed) : shuffled(all, a.seed))
   .filter((t) => !a.only || a.only.split(',').includes(t.id))
   .slice(0, a.limit ? Number(a.limit) : undefined);
+if (adapter.prefetch) await adapter.prefetch(tasks);
 console.log(`${runId}: ${tasks.length} tasks, ${done.size} done, ${index.lessons.length} lessons`);
 
 for (const [pos, task] of tasks.entries()) {
