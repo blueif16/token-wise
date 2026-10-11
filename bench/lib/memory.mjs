@@ -4,12 +4,22 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { redact } from '../../tracing/lib/redact.mjs';
 
-const senso = (args, opts = {}) =>
-  JSON.parse(execFileSync('senso', [...args, '--output', 'json', '--no-update-check'], {
-    encoding: 'utf8', timeout: opts.timeout ?? 60_000, stdio: ['ignore', 'pipe', 'pipe'],
-  }));
-
 const sleep = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+
+// Retries network failures with backoff (one outage crashed a run, 2026-10-11); other errors throw at once.
+function senso(args, opts = {}) {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return JSON.parse(execFileSync('senso', [...args, '--output', 'json', '--no-update-check'], {
+        encoding: 'utf8', timeout: opts.timeout ?? 60_000, stdio: ['ignore', 'pipe', 'pipe'],
+      }));
+    } catch (e) {
+      const transient = /"code":\s*"(network|timeout|rate_limit|server)"|ETIMEDOUT|ECONNRESET|EAI_AGAIN|\b5\d\d\b/.test(`${e.stdout || ''}${e.stderr || ''}${e.message}`);
+      if (!transient || attempt >= (opts.retries ?? 5)) throw e;
+      sleep(Math.min(60_000, 2_000 * 2 ** attempt));
+    }
+  }
+}
 
 export class LessonIndex {
   constructor(path) {
@@ -78,7 +88,7 @@ export function storeLesson(lesson, folderId, { wait = 120_000 } = {}) {
 export function searchLessons(query, contentIds, { max = 3 } = {}) {
   if (!contentIds.length) return [];
   const res = senso(['search', 'context', query.slice(0, 600), '--content-ids', ...contentIds,
-    '--require-scoped-ids', '--no-gap-signals', '--max-results', String(max)], { timeout: 30_000 });
+    '--require-scoped-ids', '--no-gap-signals', '--max-results', String(max)], { timeout: 30_000, retries: 1 });
   const seen = new Set();
   return (res.results || []).filter((r) => !seen.has(r.content_id) && seen.add(r.content_id))
     .map((r) => ({ content_id: r.content_id, score: r.score, text: r.chunk_text }));

@@ -99,8 +99,14 @@ for (const [pos, task] of tasks.entries()) {
         id, workload: a.workload, source_task: task.id, status: a.arm === 'gated' ? 'verified' : 'unverified',
         when: lesson.when, action: lesson.action, evidence: evidence(a.arm, task, gate), uses: 0, passes: 0,
       };
-      state.folder ??= createFolder(runId, BENCH_FOLDER);
-      Object.assign(entry, storeLesson(entry, state.folder));
+      try {
+        state.folder ??= createFolder(runId, BENCH_FOLDER);
+        Object.assign(entry, storeLesson(entry, state.folder));
+      } catch (e) {
+        // Memory is unavailable, not the task: record the loss and keep the run going.
+        written.push({ store_error: String(e.message).slice(0, 200), when: lesson.when.slice(0, 120) });
+        continue;
+      }
       index.lessons.push(entry);
       written.push({ id });
       index.save();
