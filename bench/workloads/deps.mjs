@@ -82,6 +82,59 @@ function lint(patch, task) {
   return [...new Set(issues)];
 }
 
+// Maven Central hiccups fail a correct patch (measured 2026-10-11: the same patch failed with
+// DependencyResolutionException, then passed by hand). Such builds are retried in a fresh container.
+const DOWNLOAD_FAIL = 'DependencyResolutionException|PluginResolutionException|Could not transfer artifact|Could not resolve dependencies|Connection reset|timed out|Remote host terminated|Transfer failed';
+
+function build(task, image, patchFile, name) {
+  // Fresh container: nothing the agent left in its own container (caches, edits outside git) counts.
+  docker.start(name, image, { workdir: task.workdir, network: NETWORK });
+  docker.copyIn(name, patchFile, '/tmp/agent.patch');
+  const patch = readFileSync(patchFile, 'utf8');
+  const applied = patch.trim() ? docker.exec(name, 'git apply --whitespace=nowarn /tmp/agent.patch', { workdir: task.workdir, shell: 'sh' }) : { code: 0 };
+  const r = docker.exec(name, `timeout 2400 ${MVN} > /tmp/build.log 2>&1; echo $?; grep -cE '${DOWNLOAD_FAIL}' /tmp/build.log; tail -c 600 /tmp/build.log`, { timeout: 2_500_000 });
+  const [exit, downloadErrors] = r.stdout.split('\n').map(Number);
+  return { applied: applied.code === 0, exit, downloadErrors, tail: r.stdout.split('\n').slice(2).join('\n') };
+}
+
+function grade(task, patchFile, prefix) {
+  const image = agentImage(task);
+  const name = `${prefix}-check`;
+  let b;
+  let attempts = 0;
+  do {
+    attempts += 1;
+    if (b) docker.remove(name);
+    b = build(task, image, patchFile, name);
+  } while (b.applied && b.exit !== 0 && b.downloadErrors > 0 && attempts < 3);
+  const cases = surefire(name, task.workdir);
+  const [g, art] = task.dependency.split(':');
+  const dep = docker.exec(name, `mvn -B -q dependency:list -DincludeGroupIds=${g} -DincludeArtifactIds=${art} -DoutputFile=/tmp/deps.txt -DappendOutput=true >/dev/null 2>&1; `
+    + `mvn -B -q help:effective-pom -Doutput=/tmp/eff.xml >/dev/null 2>&1; cat /tmp/deps.txt /tmp/eff.xml 2>/dev/null`, { timeout: 900_000 });
+  docker.remove(name);
+
+  const shortcuts = lint(readFileSync(patchFile, 'utf8'), task);
+  const base = baseline(task);
+  const missing = Object.keys(base.cases).filter((c) => base.cases[c] !== 'skip' && !(c in cases));
+  const failing = Object.keys(cases).filter((c) => cases[c] === 'fail');
+  const skipped = Object.values(cases).filter((s) => s === 'skip').length;
+  const baseSkipped = Object.values(base.cases).filter((s) => s === 'skip').length;
+  const keepsVersion = dep.stdout.includes(`${g}:${art}:jar:${task.new_version}`)
+    || new RegExp(`<artifactId>${art}</artifactId>\\s*<version>${task.new_version.replace(/\./g, '\\.')}</version>`).test(dep.stdout);
+  // Tests missing from a failed build just did not run; from a green build they were removed.
+  const testsIntact = missing.length === 0 && skipped <= baseSkipped;
+  const tampered = shortcuts.length > 0 || (b.exit === 0 && !testsIntact);
+  const pass = b.applied && b.exit === 0 && failing.length === 0 && keepsVersion && testsIntact && !tampered;
+  return {
+    pass, tampered,
+    detail: {
+      applied: b.applied, exit: b.exit, attempts, tests: Object.keys(cases).length, baseline_tests: Object.keys(base.cases).length,
+      failing: failing.slice(0, 10), missing: missing.slice(0, 10), skipped, baseline_skipped: baseSkipped,
+      keeps_version: keepsVersion, shortcuts, tail: b.tail.slice(-300),
+    },
+  };
+}
+
 export default {
   kind: 'upgrade a dependency whose new version breaks the Maven build',
 
@@ -146,42 +199,13 @@ export default {
     docker.exec(ctx.container, `chown -R ${process.getuid()}:${process.getgid()} ${ctx.workdir}`, { shell: 'sh', timeout: 600_000 });
     const exclude = [':(exclude,glob)**/target/**', ':(exclude)*.log'];
     git(['add', '-A', '--', '.', ...exclude], ctx.workdir);
-    const patch = git(['diff', '--cached', '--binary', ctx.base, '--', '.', ...exclude], ctx.workdir);
-    writeFileSync(join(ctx.taskDir, 'agent.patch'), patch);
-    const shortcuts = lint(patch, task);
+    writeFileSync(join(ctx.taskDir, 'agent.patch'), git(['diff', '--cached', '--binary', ctx.base, '--', '.', ...exclude], ctx.workdir));
+    return grade(task, join(ctx.taskDir, 'agent.patch'), ctx.container);
+  },
 
-    // Fresh container: nothing the agent left in its own container (caches, edits outside git) counts.
-    const name = `${ctx.container}-check`;
-    docker.start(name, ctx.image, { workdir: task.workdir, network: NETWORK });
-    docker.copyIn(name, join(ctx.taskDir, 'agent.patch'), '/tmp/agent.patch');
-    const applied = patch.trim() ? docker.exec(name, 'git apply --whitespace=nowarn /tmp/agent.patch', { workdir: task.workdir, shell: 'sh' }) : { code: 0 };
-    const build = docker.exec(name, `timeout 2400 ${MVN} > /tmp/build.log 2>&1; echo $?; tail -c 600 /tmp/build.log`, { timeout: 2_500_000 });
-    const exit = Number(build.stdout.split('\n')[0]);
-    const cases = surefire(name, task.workdir);
-    const [g, art] = task.dependency.split(':');
-    const dep = docker.exec(name, `mvn -B -q dependency:list -DincludeGroupIds=${g} -DincludeArtifactIds=${art} -DoutputFile=/tmp/deps.txt -DappendOutput=true >/dev/null 2>&1; `
-      + `mvn -B -q help:effective-pom -Doutput=/tmp/eff.xml >/dev/null 2>&1; cat /tmp/deps.txt /tmp/eff.xml 2>/dev/null`, { timeout: 900_000 });
-    docker.remove(name);
-
-    const base = baseline(task);
-    const missing = Object.keys(base.cases).filter((c) => base.cases[c] !== 'skip' && !(c in cases));
-    const failing = Object.keys(cases).filter((c) => cases[c] === 'fail');
-    const skipped = Object.values(cases).filter((s) => s === 'skip').length;
-    const baseSkipped = Object.values(base.cases).filter((s) => s === 'skip').length;
-    const keepsVersion = dep.stdout.includes(`${g}:${art}:jar:${task.new_version}`)
-      || new RegExp(`<artifactId>${art}</artifactId>\\s*<version>${task.new_version.replace(/\./g, '\\.')}</version>`).test(dep.stdout);
-    // Tests missing from a failed build just did not run; from a green build they were removed.
-    const testsIntact = missing.length === 0 && skipped <= baseSkipped;
-    const tampered = shortcuts.length > 0 || (exit === 0 && !testsIntact);
-    const pass = applied.code === 0 && exit === 0 && failing.length === 0 && keepsVersion && testsIntact && !tampered;
-    return {
-      pass, tampered,
-      detail: {
-        applied: applied.code === 0, exit, tests: Object.keys(cases).length, baseline_tests: Object.keys(base.cases).length,
-        failing: failing.slice(0, 10), missing: missing.slice(0, 10), skipped, baseline_skipped: baseSkipped,
-        keeps_version: keepsVersion, shortcuts, tail: build.stdout.slice(-300),
-      },
-    };
+  // Re-grades a finished task from its saved patch (bench/regrade.mjs).
+  async regrade(task, taskDir) {
+    return grade(task, join(taskDir, 'agent.patch'), `tw-regrade-${task.id}`);
   },
 
   async cleanup(task, ctx) {
