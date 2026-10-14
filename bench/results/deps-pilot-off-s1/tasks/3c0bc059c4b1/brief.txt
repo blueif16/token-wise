@@ -1,0 +1,1 @@
+Maven dependency upgrade breaks the build: org.codehaus.plexus:plexus-utils 3.5.1 -> 4.0.0 (test failure)

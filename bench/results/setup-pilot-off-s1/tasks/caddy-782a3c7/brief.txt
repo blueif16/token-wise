@@ -1,0 +1,1 @@
+reposetup · go · https://github.com/caddyserver/caddy · After setup, you must add the caddy executable to the path

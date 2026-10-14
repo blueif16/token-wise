@@ -1,0 +1,28 @@
+[
+  {
+    "id": "L-setup-pilot-gated-s1-1",
+    "workload": "setup",
+    "source_task": "openai-openai-node-8958d97",
+    "status": "verified",
+    "when": "apt-get install nodejs (NodeSource 20.x) fails with \"trying to overwrite '/usr/include/node/common.gypi', which is also in package libnode-dev\" or \"Sub-process /usr/bin/dpkg returned an error code\"",
+    "action": "Ubuntu's stock libnode-dev (v12) conflicts with NodeSource's nodejs. Run `apt-get remove -y libnode-dev nodejs npm`, then `apt-get install -y nodejs`, then confirm with `node -v` (should be v20.x) and `npm -v` before running yarn/npm commands. Do not retry the same install command.",
+    "evidence": "Verified: task openai-openai-node-8958d97 passed its official check with tests untouched.\nFailure (step 4): `curl -fsSL https://deb.nodesource.com/setup_20.x | bash - 2>&1 | tail -5; apt-get install -y nodejs 2>&1 | tail -5; node -v; npm -v` → bash: line <n>: npm: command not found\nResolved by (step 5): `apt-get remove -y libnode-dev nodejs npm >/dev/null 2>&1; apt-get install -y nodejs 2>&1 | tail -2; node -v; npm -v; npm i -g yarn >/dev/null 2>&1; yarn install --frozen-lockfile 2>&1 | tail -3; yarn build 2>&1 | tail -5`",
+    "uses": 0,
+    "passes": 0,
+    "kb_node_id": "e8348f27-c236-4a80-9c9e-e0121a371bc0",
+    "content_id": "4a785867-0e31-485a-a882-75dcc1ddacd0"
+  },
+  {
+    "id": "L-setup-pilot-gated-s1-2",
+    "workload": "setup",
+    "source_task": "hybridgroup-cylon-0ba0301",
+    "status": "verified",
+    "when": "`which node npm` finds nothing (or `cat package.json` fails) on a JavaScript repo setup task",
+    "action": "Install Node and npm with `apt-get update -qq && apt-get install -y -qq nodejs npm`. Then wait for any background apt-get to exit before using node, for example `until which npm >/dev/null 2>&1 && ! pgrep -x apt-get >/dev/null; do sleep 3; done`, and confirm with `node -v; npm -v`. Only then run `npm install`.",
+    "evidence": "Verified: task hybridgroup-cylon-0ba0301 passed its official check with tests untouched.\nFailure (step 1): `cat package.json | head -50; which node npm` → <q>: <q>\nResolved by (step 3): `until which npm >/dev/null 2>&1 && ! pgrep -x apt-get >/dev/null; do sleep 3; done; node -v; npm -v`",
+    "uses": 0,
+    "passes": 0,
+    "kb_node_id": "f5c5967f-51aa-4d59-8b33-6858d1723929",
+    "content_id": "619e99a8-04c9-4831-a5b1-aa2f493dd614"
+  }
+]

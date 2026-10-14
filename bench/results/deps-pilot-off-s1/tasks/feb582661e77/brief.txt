@@ -1,0 +1,1 @@
+Maven dependency upgrade breaks the build: org.liquibase:liquibase-core 3.4.2 -> 4.8.0 (compilation failure)

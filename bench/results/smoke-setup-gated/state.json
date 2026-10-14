@@ -1,0 +1,15 @@
+{
+  "runId": "smoke-setup-gated",
+  "args": {
+    "workload": "setup",
+    "set": "pilot",
+    "arm": "gated",
+    "seed": "1",
+    "model": "haiku",
+    "only": "ta-lib-python-0c957ed",
+    "run-id": "smoke-setup-gated",
+    "max-turns": "40",
+    "timeout-min": "25"
+  },
+  "folder": "a6c9f6a4-4e41-4e35-991c-d5d43d591344"
+}

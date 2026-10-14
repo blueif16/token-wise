@@ -1,0 +1,32 @@
+diff --git a/junit/download-test/file.json b/junit/download-test/file.json
+new file mode 100644
+index 0000000..9e26dfe
+--- /dev/null
++++ b/junit/download-test/file.json
+@@ -0,0 +1 @@
++{}
+\ No newline at end of file
+diff --git a/pom.xml b/pom.xml
+index 3e44f5f..2767dff 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -107,12 +107,17 @@
+         <dependency>
+             <groupId>com.fasterxml.jackson.core</groupId>
+             <artifactId>jackson-core</artifactId>
+-            <version>2.9.8</version>
++            <version>2.12.6</version>
+         </dependency>
+         <dependency>
+             <groupId>com.fasterxml.jackson.datatype</groupId>
+             <artifactId>jackson-datatype-jsr310</artifactId>
+-            <version>2.9.8</version>
++            <version>2.12.6</version>
++        </dependency>
++        <dependency>
++            <groupId>com.fasterxml.jackson.core</groupId>
++            <artifactId>jackson-annotations</artifactId>
++            <version>2.12.6</version>
+         </dependency>
+         <dependency>
+             <groupId>com.fasterxml.jackson.core</groupId>

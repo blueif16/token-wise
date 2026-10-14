@@ -1,0 +1,26 @@
+diff --git a/pom.xml b/pom.xml
+index ee82483..7803db0 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -25,7 +25,7 @@
+         <dependency>
+             <groupId>com.fasterxml.jackson.core</groupId>
+             <artifactId>jackson-core</artifactId>
+-            <version>2.10.5</version>
++            <version>2.12.6</version>
+             <scope>compile</scope>
+         </dependency>
+         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+diff --git a/src/main/java/com/splunk/hecclient/Event.java b/src/main/java/com/splunk/hecclient/Event.java
+index 20ec028..85c7af3 100644
+--- a/src/main/java/com/splunk/hecclient/Event.java
++++ b/src/main/java/com/splunk/hecclient/Event.java
+@@ -48,7 +48,7 @@ public abstract class Event {
+     static {
+         jsonMapper = new ObjectMapper();
+         jsonMapper.registerModule(new com.splunk.kafka.connect.JacksonStructModule());
+-        jsonMapper.setDateFormat(StdDateFormat.instance);
++        jsonMapper.setDateFormat(StdDateFormat.instance.withColonInTimeZone(false));
+     }
+ 
+     protected static final Logger log = LoggerFactory.getLogger(Event.class);

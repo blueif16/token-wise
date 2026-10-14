@@ -1,0 +1,13 @@
+{
+  "runId": "setup-pilot-gated-s1",
+  "args": {
+    "workload": "setup",
+    "set": "pilot",
+    "arm": "gated",
+    "seed": "1",
+    "model": "sonnet",
+    "max-turns": "100",
+    "timeout-min": "45"
+  },
+  "folder": "216d08ed-f5df-448d-b7a9-595671a11693"
+}

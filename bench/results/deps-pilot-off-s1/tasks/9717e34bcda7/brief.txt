@@ -1,0 +1,1 @@
+Maven dependency upgrade breaks the build: com.jcabi:jcabi-aspects 0.24.1 -> 0.25.1 (compilation failure)

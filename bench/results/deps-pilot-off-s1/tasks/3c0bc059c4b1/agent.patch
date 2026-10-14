@@ -1,0 +1,76 @@
+diff --git a/docs/reports/4.3-SNAPSHOT/license-maven-plugin-fs/license-plugin-report.xml b/docs/reports/4.3-SNAPSHOT/license-maven-plugin-fs/license-plugin-report.xml
+new file mode 100644
+index 0000000..b1d2f99
+--- /dev/null
++++ b/docs/reports/4.3-SNAPSHOT/license-maven-plugin-fs/license-plugin-report.xml
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="UTF-8" standalone="no"?>
++<licensePluginReport goal="CHECK" timestamp="1791764540258">
++    <module artifactId="license-maven-plugin-fs" groupId="com.mycila" version="4.3-SNAPSHOT"/>
++    <files>
++        <file path="pom.xml" result="PRESENT"/>
++        <file path="src/main/java/com/mycila/maven/plugin/license/fs/CopyrightRangeProvider.java" result="PRESENT"/>
++        <file path="src/test/java/com/mycila/maven/plugin/license/fs/CopyrightRangeProviderTest.java" result="PRESENT"/>
++    </files>
++</licensePluginReport>
+diff --git a/docs/reports/4.3-SNAPSHOT/license-maven-plugin-git/license-plugin-report.xml b/docs/reports/4.3-SNAPSHOT/license-maven-plugin-git/license-plugin-report.xml
+index d08175f..d07ee89 100644
+--- a/docs/reports/4.3-SNAPSHOT/license-maven-plugin-git/license-plugin-report.xml
++++ b/docs/reports/4.3-SNAPSHOT/license-maven-plugin-git/license-plugin-report.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+-<licensePluginReport goal="CHECK" timestamp="1679564880056">
++<licensePluginReport goal="CHECK" timestamp="1791764533765">
+     <module artifactId="license-maven-plugin-git" groupId="com.mycila" version="4.3-SNAPSHOT"/>
+     <files>
+         <file path="pom.xml" result="PRESENT"/>
+diff --git a/docs/reports/4.3-SNAPSHOT/license-maven-plugin-svn/license-plugin-report.xml b/docs/reports/4.3-SNAPSHOT/license-maven-plugin-svn/license-plugin-report.xml
+index 4abee4b..f7c9838 100644
+--- a/docs/reports/4.3-SNAPSHOT/license-maven-plugin-svn/license-plugin-report.xml
++++ b/docs/reports/4.3-SNAPSHOT/license-maven-plugin-svn/license-plugin-report.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+-<licensePluginReport goal="CHECK" timestamp="1679564884958">
++<licensePluginReport goal="CHECK" timestamp="1791764540133">
+     <module artifactId="license-maven-plugin-svn" groupId="com.mycila" version="4.3-SNAPSHOT"/>
+     <files>
+         <file path="README.MD" result="UNKNOWN"/>
+diff --git a/docs/reports/4.3-SNAPSHOT/license-maven-plugin/license-plugin-report.xml b/docs/reports/4.3-SNAPSHOT/license-maven-plugin/license-plugin-report.xml
+index fe4a517..1fb458c 100644
+--- a/docs/reports/4.3-SNAPSHOT/license-maven-plugin/license-plugin-report.xml
++++ b/docs/reports/4.3-SNAPSHOT/license-maven-plugin/license-plugin-report.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+-<licensePluginReport goal="CHECK" timestamp="1692174536526">
++<licensePluginReport goal="CHECK" timestamp="1791764522372">
+     <module artifactId="license-maven-plugin" groupId="com.mycila" version="4.3-SNAPSHOT"/>
+     <files>
+         <file path="pom.xml" result="PRESENT"/>
+diff --git a/docs/reports/4.3-SNAPSHOT/license-plugin-report.xml b/docs/reports/4.3-SNAPSHOT/license-plugin-report.xml
+index 171c706..2993b71 100644
+--- a/docs/reports/4.3-SNAPSHOT/license-plugin-report.xml
++++ b/docs/reports/4.3-SNAPSHOT/license-plugin-report.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+-<licensePluginReport goal="CHECK" timestamp="1692174533524">
++<licensePluginReport goal="CHECK" timestamp="1791764520057">
+     <module artifactId="license-maven-plugin-parent" groupId="com.mycila" version="4.3-SNAPSHOT"/>
+     <files>
+         <file path=".mvn/extensions.xml" result="PRESENT"/>
+diff --git a/license-maven-plugin/pom.xml b/license-maven-plugin/pom.xml
+index b41f1c7..623e3b6 100644
+--- a/license-maven-plugin/pom.xml
++++ b/license-maven-plugin/pom.xml
+@@ -226,6 +226,12 @@
+       <artifactId>plexus-utils</artifactId>
+       <version>4.0.0</version>
+     </dependency>
++    <dependency>
++      <groupId>org.codehaus.plexus</groupId>
++      <artifactId>plexus-xml</artifactId>
++      <version>3.0.0</version>
++      <scope>test</scope>
++    </dependency>
+ 
+     <dependency>
+       <groupId>com.mycila</groupId>

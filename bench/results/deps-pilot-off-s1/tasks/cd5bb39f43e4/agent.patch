@@ -1,0 +1,27 @@
+diff --git a/pom.xml b/pom.xml
+index a054b61..5d8fe05 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -180,6 +180,11 @@
+                 <artifactId>plexus-utils</artifactId>
+                 <version>4.0.0</version>
+             </dependency>
++            <dependency>
++                <groupId>org.codehaus.plexus</groupId>
++                <artifactId>plexus-xml</artifactId>
++                <version>3.0.0</version>
++            </dependency>
+             <!-- /codehaus -->
+ 
+             <!-- other -->
+@@ -359,6 +364,10 @@
+             <groupId>org.codehaus.plexus</groupId>
+             <artifactId>plexus-utils</artifactId>
+         </dependency>
++        <dependency>
++            <groupId>org.codehaus.plexus</groupId>
++            <artifactId>plexus-xml</artifactId>
++        </dependency>
+         <dependency>
+             <groupId>org.codehaus.plexus</groupId>
+             <artifactId>plexus-resources</artifactId>

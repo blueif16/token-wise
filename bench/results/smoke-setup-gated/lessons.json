@@ -1,0 +1,28 @@
+[
+  {
+    "id": "L-smoke-setup-gated-1",
+    "workload": "setup",
+    "source_task": "ta-lib-python-0c957ed",
+    "status": "verified",
+    "when": "pip3 install -r requirements.txt → \"Could not open requirements file: No such file or directory\" and make build → \"No rule to make target 'build'\", right after cloning or when the shell cwd is a workspace rather than the repo",
+    "action": "Before running install or build commands, locate the real project root instead of assuming cwd: `find <workspace> -maxdepth 6 \\( -name pyproject.toml -o -name setup.py -o -name requirements.txt -o -name Makefile \\) -not -path '*/node_modules/*'`. Then use the absolute path to that root for every command (pip install -r \"$R/requirements.txt\", cd \"$R\" && make ...). Check Makefile targets with `grep -E '^[a-zA-Z_-]+:' Makefile` before calling `make build`, since many repos don't define one. Use `pip install \"$R\"` for the local package.",
+    "evidence": "Verified: task ta-lib-python-0c957ed passed its official check with tests untouched.\nFailure (step 8): `pip3 install -q -r requirements.txt 2>&1 | tail -3; echo \"pip $?\"; make build 2>&1 | tail -15; echo \"build ${PIPESTATUS[0]}\"; ls talib/*.so 2>/dev/null` → error: could not open requirements file: [errno <n>] no such file or directory: <q>\nResolved by (step 10): `R=/home/ran/token-wise/bench/.work/tw-smoke-setup-gated-0-1791755435180/testbed; cat $R/requirements.txt; pip3 install -q -r $R/requirements.txt 2>&1 | tail -3; echo \"pip ${PIPESTATUS[0]}\"; cd $R && make build 2>&1 | tail -15; echo \"build ${PIPESTATUS[0]}\"; ls $R/talib/*.so 2>/dev/null`",
+    "uses": 0,
+    "passes": 0,
+    "kb_node_id": "52c5b0ce-74c4-48a1-bcb3-df75b32c7b0e",
+    "content_id": "ab6b33c0-ea3e-431b-8247-523a1bfa5b2e"
+  },
+  {
+    "id": "L-smoke-setup-gated-2",
+    "workload": "setup",
+    "source_task": "ta-lib-python-0c957ed",
+    "status": "verified",
+    "when": "find /usr/lib -name 'libta_lib*' returns nothing and ldconfig -p | grep ta_lib is empty after building a C library, so the Python binding's build or import can't find the native lib",
+    "action": "Native C libraries often use hyphens, not underscores (e.g. libta-lib.so, not libta_lib.so). Search with both spellings and with a loose pattern: `ls -l /usr/lib/libta-lib* /usr/local/lib/libta-lib* 2>/dev/null; ldconfig -p | grep -i ta-lib`. Confirm the library is registered with ldconfig and that --prefix matches where it was installed before pip-installing the Python binding. Don't chain the ldconfig step with && after a find that may return nothing; a nonzero exit hides the real result.",
+    "evidence": "Verified: task ta-lib-python-0c957ed passed its official check with tests untouched.\nFailure (step 5): `ldconfig && find /usr/lib /usr/local/lib -name 'libta_lib*' 2>/dev/null; ldconfig -p | grep ta_lib` → \nResolved by (step 7): `ls -l /usr/lib/libta-lib* && ldconfig && ldconfig -p | grep ta-lib`",
+    "uses": 0,
+    "passes": 0,
+    "kb_node_id": "d98d8839-9219-4dc1-92ea-18174a4a9b54",
+    "content_id": "d30d4c70-b0b9-41e5-a434-58c86ae9feb2"
+  }
+]

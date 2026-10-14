@@ -1,5 +1,7 @@
 # bench: does shared, verified memory make a team's coding agents better at everyday work?
 
+Current status, goal and next steps: [STATUS.md](STATUS.md).
+
 Headless Claude Code runs real tasks from three public benchmarks, one workflow each. Every task
 is graded by the benchmark's own check, run by the harness after the agent stops; the agent never
 sees the check.

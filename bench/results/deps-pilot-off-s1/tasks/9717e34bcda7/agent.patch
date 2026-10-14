@@ -1,0 +1,471 @@
+diff --git a/src/main/java/com/jcabi/github/mock/MkGithub.java b/src/main/java/com/jcabi/github/mock/MkGithub.java
+index 2efb1ed..0d3ab2f 100644
+--- a/src/main/java/com/jcabi/github/mock/MkGithub.java
++++ b/src/main/java/com/jcabi/github/mock/MkGithub.java
+@@ -31,7 +31,6 @@ package com.jcabi.github.mock;
+ 
+ import com.jcabi.aspects.Immutable;
+ import com.jcabi.aspects.Loggable;
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.Gists;
+ import com.jcabi.github.Github;
+ import com.jcabi.github.Gitignores;
+@@ -220,7 +219,7 @@ public final class MkGithub implements Github {
+     public Repo randomRepo() throws IOException {
+         return this.repos().create(
+             new Repos.RepoCreate(
+-                RandomStringUtils.randomAlphanumeric(Tv.TWENTY),
++                RandomStringUtils.randomAlphanumeric(20),
+                 true
+             )
+         );
+diff --git a/src/test/java/com/jcabi/github/ForkTest.java b/src/test/java/com/jcabi/github/ForkTest.java
+index 3afb34b..1828572 100644
+--- a/src/test/java/com/jcabi/github/ForkTest.java
++++ b/src/test/java/com/jcabi/github/ForkTest.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import javax.json.Json;
+ import org.hamcrest.MatcherAssert;
+ import org.hamcrest.Matchers;
+diff --git a/src/test/java/com/jcabi/github/IssueTest.java b/src/test/java/com/jcabi/github/IssueTest.java
+index bf8ceb0..19282ba 100644
+--- a/src/test/java/com/jcabi/github/IssueTest.java
++++ b/src/test/java/com/jcabi/github/IssueTest.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.http.request.FakeRequest;
+ import java.io.IOException;
+ import java.util.ArrayList;
+diff --git a/src/test/java/com/jcabi/github/PullCommentTest.java b/src/test/java/com/jcabi/github/PullCommentTest.java
+index 1f64be8..1d11fd9 100644
+--- a/src/test/java/com/jcabi/github/PullCommentTest.java
++++ b/src/test/java/com/jcabi/github/PullCommentTest.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import javax.json.Json;
+ import javax.json.JsonObject;
+ import org.apache.commons.lang3.RandomStringUtils;
+diff --git a/src/test/java/com/jcabi/github/RepoRule.java b/src/test/java/com/jcabi/github/RepoRule.java
+index ca443b1..0c06a7e 100644
+--- a/src/test/java/com/jcabi/github/RepoRule.java
++++ b/src/test/java/com/jcabi/github/RepoRule.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.log.Logger;
+ import java.io.IOException;
+ import org.apache.commons.lang3.RandomStringUtils;
+diff --git a/src/test/java/com/jcabi/github/RtAssigneesITCase.java b/src/test/java/com/jcabi/github/RtAssigneesITCase.java
+index 1ad66bd..040cb8c 100644
+--- a/src/test/java/com/jcabi/github/RtAssigneesITCase.java
++++ b/src/test/java/com/jcabi/github/RtAssigneesITCase.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.OAuthScope.Scope;
+ import org.apache.commons.lang3.RandomStringUtils;
+ import org.hamcrest.MatcherAssert;
+diff --git a/src/test/java/com/jcabi/github/RtContentsITCase.java b/src/test/java/com/jcabi/github/RtContentsITCase.java
+index ec3691f..4bc8942 100644
+--- a/src/test/java/com/jcabi/github/RtContentsITCase.java
++++ b/src/test/java/com/jcabi/github/RtContentsITCase.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.OAuthScope.Scope;
+ import javax.json.Json;
+ import javax.json.JsonObject;
+diff --git a/src/test/java/com/jcabi/github/RtHooksITCase.java b/src/test/java/com/jcabi/github/RtHooksITCase.java
+index ba12618..02040b5 100644
+--- a/src/test/java/com/jcabi/github/RtHooksITCase.java
++++ b/src/test/java/com/jcabi/github/RtHooksITCase.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.OAuthScope.Scope;
+ import java.io.IOException;
+ import java.util.Collections;
+diff --git a/src/test/java/com/jcabi/github/RtLimitTest.java b/src/test/java/com/jcabi/github/RtLimitTest.java
+index ffa3f0a..8af4d12 100644
+--- a/src/test/java/com/jcabi/github/RtLimitTest.java
++++ b/src/test/java/com/jcabi/github/RtLimitTest.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.http.request.FakeRequest;
+ import org.hamcrest.MatcherAssert;
+ import org.hamcrest.Matchers;
+diff --git a/src/test/java/com/jcabi/github/RtMilestonesITCase.java b/src/test/java/com/jcabi/github/RtMilestonesITCase.java
+index 1f31f6d..f8acac0 100644
+--- a/src/test/java/com/jcabi/github/RtMilestonesITCase.java
++++ b/src/test/java/com/jcabi/github/RtMilestonesITCase.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.OAuthScope.Scope;
+ import com.jcabi.http.wire.RetryWire;
+ import com.jcabi.immutable.ArrayMap;
+diff --git a/src/test/java/com/jcabi/github/RtOrganizationsTest.java b/src/test/java/com/jcabi/github/RtOrganizationsTest.java
+index ce46940..e9aad3b 100644
+--- a/src/test/java/com/jcabi/github/RtOrganizationsTest.java
++++ b/src/test/java/com/jcabi/github/RtOrganizationsTest.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.mock.MkGithub;
+ import com.jcabi.http.mock.MkAnswer;
+ import com.jcabi.http.mock.MkContainer;
+diff --git a/src/test/java/com/jcabi/github/RtPullCommentsTest.java b/src/test/java/com/jcabi/github/RtPullCommentsTest.java
+index 8e58aa6..57a0a73 100644
+--- a/src/test/java/com/jcabi/github/RtPullCommentsTest.java
++++ b/src/test/java/com/jcabi/github/RtPullCommentsTest.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.mock.MkGithub;
+ import com.jcabi.http.Request;
+ import com.jcabi.http.mock.MkAnswer;
+diff --git a/src/test/java/com/jcabi/github/RtPullsTest.java b/src/test/java/com/jcabi/github/RtPullsTest.java
+index b28d019..24bd960 100644
+--- a/src/test/java/com/jcabi/github/RtPullsTest.java
++++ b/src/test/java/com/jcabi/github/RtPullsTest.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.http.Request;
+ import com.jcabi.http.mock.MkAnswer;
+ import com.jcabi.http.mock.MkContainer;
+diff --git a/src/test/java/com/jcabi/github/RtReferencesITCase.java b/src/test/java/com/jcabi/github/RtReferencesITCase.java
+index 3fcc510..91e331b 100644
+--- a/src/test/java/com/jcabi/github/RtReferencesITCase.java
++++ b/src/test/java/com/jcabi/github/RtReferencesITCase.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.OAuthScope.Scope;
+ import org.apache.commons.lang3.RandomStringUtils;
+ import org.hamcrest.MatcherAssert;
+diff --git a/src/test/java/com/jcabi/github/RtReleaseAssetITCase.java b/src/test/java/com/jcabi/github/RtReleaseAssetITCase.java
+index 55a0fc5..9d4b08b 100644
+--- a/src/test/java/com/jcabi/github/RtReleaseAssetITCase.java
++++ b/src/test/java/com/jcabi/github/RtReleaseAssetITCase.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.OAuthScope.Scope;
+ import javax.json.Json;
+ import org.apache.commons.lang3.RandomStringUtils;
+diff --git a/src/test/java/com/jcabi/github/RtReleaseAssetsITCase.java b/src/test/java/com/jcabi/github/RtReleaseAssetsITCase.java
+index 6b7c6aa..0999433 100644
+--- a/src/test/java/com/jcabi/github/RtReleaseAssetsITCase.java
++++ b/src/test/java/com/jcabi/github/RtReleaseAssetsITCase.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.OAuthScope.Scope;
+ import org.apache.commons.lang3.RandomStringUtils;
+ import org.hamcrest.MatcherAssert;
+diff --git a/src/test/java/com/jcabi/github/RtReleaseAssetsTest.java b/src/test/java/com/jcabi/github/RtReleaseAssetsTest.java
+index 3b4e161..22acd85 100644
+--- a/src/test/java/com/jcabi/github/RtReleaseAssetsTest.java
++++ b/src/test/java/com/jcabi/github/RtReleaseAssetsTest.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.mock.MkGithub;
+ import com.jcabi.http.request.FakeRequest;
+ import java.net.HttpURLConnection;
+diff --git a/src/test/java/com/jcabi/github/RtReleaseITCase.java b/src/test/java/com/jcabi/github/RtReleaseITCase.java
+index 22ccbcc..3b32887 100644
+--- a/src/test/java/com/jcabi/github/RtReleaseITCase.java
++++ b/src/test/java/com/jcabi/github/RtReleaseITCase.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.OAuthScope.Scope;
+ import javax.json.Json;
+ import javax.json.JsonObject;
+diff --git a/src/test/java/com/jcabi/github/RtReleasesITCase.java b/src/test/java/com/jcabi/github/RtReleasesITCase.java
+index e8f8b63..7ce0fde 100644
+--- a/src/test/java/com/jcabi/github/RtReleasesITCase.java
++++ b/src/test/java/com/jcabi/github/RtReleasesITCase.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.OAuthScope.Scope;
+ import org.apache.commons.lang3.RandomStringUtils;
+ import org.hamcrest.MatcherAssert;
+diff --git a/src/test/java/com/jcabi/github/RtRepoITCase.java b/src/test/java/com/jcabi/github/RtRepoITCase.java
+index 38caf0b..c596d86 100644
+--- a/src/test/java/com/jcabi/github/RtRepoITCase.java
++++ b/src/test/java/com/jcabi/github/RtRepoITCase.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.OAuthScope.Scope;
+ import javax.json.Json;
+ import org.apache.commons.codec.binary.Base64;
+diff --git a/src/test/java/com/jcabi/github/RtSearchITCase.java b/src/test/java/com/jcabi/github/RtSearchITCase.java
+index c40293c..bdc5544 100644
+--- a/src/test/java/com/jcabi/github/RtSearchITCase.java
++++ b/src/test/java/com/jcabi/github/RtSearchITCase.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.OAuthScope.Scope;
+ import java.util.EnumMap;
+ import java.util.Iterator;
+diff --git a/src/test/java/com/jcabi/github/RtTagITCase.java b/src/test/java/com/jcabi/github/RtTagITCase.java
+index 772e291..f33f43c 100644
+--- a/src/test/java/com/jcabi/github/RtTagITCase.java
++++ b/src/test/java/com/jcabi/github/RtTagITCase.java
+@@ -30,7 +30,6 @@
+ 
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.OAuthScope.Scope;
+ import javax.json.Json;
+ import javax.json.JsonObject;
+diff --git a/src/test/java/com/jcabi/github/RtTagsITCase.java b/src/test/java/com/jcabi/github/RtTagsITCase.java
+index 0d6565b..0965c29 100644
+--- a/src/test/java/com/jcabi/github/RtTagsITCase.java
++++ b/src/test/java/com/jcabi/github/RtTagsITCase.java
+@@ -30,7 +30,6 @@
+ 
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.OAuthScope.Scope;
+ import javax.json.Json;
+ import javax.json.JsonObject;
+diff --git a/src/test/java/com/jcabi/github/RtUserOrganizationsTest.java b/src/test/java/com/jcabi/github/RtUserOrganizationsTest.java
+index 0b07dba..5cbb74a 100644
+--- a/src/test/java/com/jcabi/github/RtUserOrganizationsTest.java
++++ b/src/test/java/com/jcabi/github/RtUserOrganizationsTest.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.mock.MkGithub;
+ import com.jcabi.http.mock.MkAnswer;
+ import com.jcabi.http.mock.MkContainer;
+diff --git a/src/test/java/com/jcabi/github/RtUserTest.java b/src/test/java/com/jcabi/github/RtUserTest.java
+index 874346c..b0f9e96 100644
+--- a/src/test/java/com/jcabi/github/RtUserTest.java
++++ b/src/test/java/com/jcabi/github/RtUserTest.java
+@@ -29,7 +29,6 @@
+  */
+ package com.jcabi.github;
+ 
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.github.mock.MkGithub;
+ import com.jcabi.http.Request;
+ import com.jcabi.http.mock.MkAnswer;
+diff --git a/src/test/java/com/jcabi/github/Tv.java b/src/test/java/com/jcabi/github/Tv.java
+new file mode 100644
+index 0000000..370cfb1
+--- /dev/null
++++ b/src/test/java/com/jcabi/github/Tv.java
+@@ -0,0 +1,78 @@
++/**
++ * Copyright (c) 2013-2023, jcabi.com
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met: 1) Redistributions of source code must retain the above
++ * copyright notice, this list of conditions and the following
++ * disclaimer. 2) Redistributions in binary form must reproduce the above
++ * copyright notice, this list of conditions and the following
++ * disclaimer in the documentation and/or other materials provided
++ * with the distribution. 3) Neither the name of the jcabi.com nor
++ * the names of its contributors may be used to endorse or promote
++ * products derived from this software without specific prior written
++ * permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
++ * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
++ * FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
++ * INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
++ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
++ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
++ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
++ * OF THE POSSIBILITY OF SUCH DAMAGE.
++ */
++package com.jcabi.github;
++
++/**
++ * Numeric constants used in tests.
++ *
++ * @since 0.24
++ */
++public final class Tv {
++
++    /** Three. */
++    public static final int THREE = 3;
++
++    /** Four. */
++    public static final int FOUR = 4;
++
++    /** Five. */
++    public static final int FIVE = 5;
++
++    /** Six. */
++    public static final int SIX = 6;
++
++    /** Ten. */
++    public static final int TEN = 10;
++
++    /** Fifteen. */
++    public static final int FIFTEEN = 15;
++
++    /** Twenty. */
++    public static final int TWENTY = 20;
++
++    /** Thirty. */
++    public static final int THIRTY = 30;
++
++    /** Hundred. */
++    public static final int HUNDRED = 100;
++
++    /** Thousand. */
++    public static final int THOUSAND = 1000;
++
++    /** Billion. */
++    public static final int BILLION = 1_000_000_000;
++
++    /**
++     * Private ctor.
++     */
++    private Tv() {
++        // utility class
++    }
++}
+diff --git a/src/test/java/com/jcabi/github/mock/MkCommentTest.java b/src/test/java/com/jcabi/github/mock/MkCommentTest.java
+index dc827e3..02e6336 100644
+--- a/src/test/java/com/jcabi/github/mock/MkCommentTest.java
++++ b/src/test/java/com/jcabi/github/mock/MkCommentTest.java
+@@ -29,7 +29,7 @@
+  */
+ package com.jcabi.github.mock;
+ 
+-import com.jcabi.aspects.Tv;
++import com.jcabi.github.Tv;
+ import com.jcabi.github.Comment;
+ import com.jcabi.github.Coordinates;
+ import com.jcabi.github.Repos;
+diff --git a/src/test/java/com/jcabi/github/mock/MkGithubTest.java b/src/test/java/com/jcabi/github/mock/MkGithubTest.java
+index 1f161a1..bef3b19 100644
+--- a/src/test/java/com/jcabi/github/mock/MkGithubTest.java
++++ b/src/test/java/com/jcabi/github/mock/MkGithubTest.java
+@@ -29,7 +29,7 @@
+  */
+ package com.jcabi.github.mock;
+ 
+-import com.jcabi.aspects.Tv;
++import com.jcabi.github.Tv;
+ import com.jcabi.github.Comment;
+ import com.jcabi.github.Github;
+ import com.jcabi.github.Issue;
+diff --git a/src/test/java/com/jcabi/github/mock/MkIssueEventsTest.java b/src/test/java/com/jcabi/github/mock/MkIssueEventsTest.java
+index f8b453a..2784f35 100644
+--- a/src/test/java/com/jcabi/github/mock/MkIssueEventsTest.java
++++ b/src/test/java/com/jcabi/github/mock/MkIssueEventsTest.java
+@@ -30,7 +30,7 @@
+ package com.jcabi.github.mock;
+ 
+ import com.google.common.base.Optional;
+-import com.jcabi.aspects.Tv;
++import com.jcabi.github.Tv;
+ import com.jcabi.github.Event;
+ import java.util.Iterator;
+ import org.hamcrest.MatcherAssert;
+diff --git a/src/test/java/com/jcabi/github/mock/MkIssuesTest.java b/src/test/java/com/jcabi/github/mock/MkIssuesTest.java
+index 0527fb8..69bd472 100644
+--- a/src/test/java/com/jcabi/github/mock/MkIssuesTest.java
++++ b/src/test/java/com/jcabi/github/mock/MkIssuesTest.java
+@@ -29,7 +29,7 @@
+  */
+ package com.jcabi.github.mock;
+ 
+-import com.jcabi.aspects.Tv;
++import com.jcabi.github.Tv;
+ import com.jcabi.github.Github;
+ import com.jcabi.github.Issue;
+ import com.jcabi.github.Repo;
+diff --git a/src/test/java/com/jcabi/github/mock/MkPublicMembersTest.java b/src/test/java/com/jcabi/github/mock/MkPublicMembersTest.java
+index 57a743c..e456be5 100644
+--- a/src/test/java/com/jcabi/github/mock/MkPublicMembersTest.java
++++ b/src/test/java/com/jcabi/github/mock/MkPublicMembersTest.java
+@@ -29,7 +29,7 @@
+  */
+ package com.jcabi.github.mock;
+ 
+-import com.jcabi.aspects.Tv;
++import com.jcabi.github.Tv;
+ import com.jcabi.github.Organization;
+ import com.jcabi.github.PublicMembers;
+ import com.jcabi.github.User;
+diff --git a/src/test/java/com/jcabi/github/mock/MkRepoTest.java b/src/test/java/com/jcabi/github/mock/MkRepoTest.java
+index d29e51e..5586cef 100644
+--- a/src/test/java/com/jcabi/github/mock/MkRepoTest.java
++++ b/src/test/java/com/jcabi/github/mock/MkRepoTest.java
+@@ -30,7 +30,7 @@
+ package com.jcabi.github.mock;
+ 
+ import com.google.common.collect.Lists;
+-import com.jcabi.aspects.Tv;
++import com.jcabi.github.Tv;
+ import com.jcabi.github.Coordinates;
+ import com.jcabi.github.Language;
+ import com.jcabi.github.Milestones;

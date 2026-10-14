@@ -1,0 +1,63 @@
+diff --git a/src/main/java/com/jcabi/ssh/Ssh.java b/src/main/java/com/jcabi/ssh/Ssh.java
+index 50375ba..6158c05 100644
+--- a/src/main/java/com/jcabi/ssh/Ssh.java
++++ b/src/main/java/com/jcabi/ssh/Ssh.java
+@@ -30,7 +30,6 @@
+ package com.jcabi.ssh;
+ 
+ import com.jcabi.aspects.RetryOnFailure;
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.log.Logger;
+ import com.jcraft.jsch.JSch;
+ import com.jcraft.jsch.JSchException;
+@@ -232,7 +231,7 @@ public final class Ssh extends AbstractSshShell {
+     // @checkstyle ProtectedMethodInFinalClassCheck (10 lines)
+     @Override
+     @RetryOnFailure(
+-        attempts = Tv.SEVEN,
++        attempts = 7,
+         delay = 1,
+         unit = TimeUnit.MINUTES,
+         verbose = false,
+@@ -291,7 +290,7 @@ public final class Ssh extends AbstractSshShell {
+         session.setConfig("StrictHostKeyChecking", "no");
+         session.setTimeout((int) TimeUnit.MINUTES.toMillis(1L));
+         session.setServerAliveInterval((int) TimeUnit.SECONDS.toMillis(1L));
+-        session.setServerAliveCountMax(Tv.MILLION);
++        session.setServerAliveCountMax(1_000_000);
+         session.connect((int) TimeUnit.SECONDS.toMillis(10L));
+         Logger.debug(
+             this,
+diff --git a/src/main/java/com/jcabi/ssh/SshByPassword.java b/src/main/java/com/jcabi/ssh/SshByPassword.java
+index e94facc..4ee8658 100644
+--- a/src/main/java/com/jcabi/ssh/SshByPassword.java
++++ b/src/main/java/com/jcabi/ssh/SshByPassword.java
+@@ -30,7 +30,6 @@
+ package com.jcabi.ssh;
+ 
+ import com.jcabi.aspects.RetryOnFailure;
+-import com.jcabi.aspects.Tv;
+ import com.jcabi.log.Logger;
+ import com.jcraft.jsch.JSch;
+ import com.jcraft.jsch.JSchException;
+@@ -74,7 +73,7 @@ public final class SshByPassword extends AbstractSshShell {
+     // @checkstyle ProtectedMethodInFinalClassCheck (10 lines)
+     @Override
+     @RetryOnFailure(
+-        attempts = Tv.SEVEN,
++        attempts = 7,
+         delay = 1,
+         unit = TimeUnit.MINUTES,
+         verbose = false,
+@@ -95,9 +94,9 @@ public final class SshByPassword extends AbstractSshShell {
+             session.setConfig("StrictHostKeyChecking", "no");
+             session.setPassword(this.password);
+             session.setServerAliveInterval(
+-                (int) TimeUnit.SECONDS.toMillis(Tv.TEN)
++                (int) TimeUnit.SECONDS.toMillis(10)
+             );
+-            session.setServerAliveCountMax(Tv.MILLION);
++            session.setServerAliveCountMax(1_000_000);
+             session.connect((int) TimeUnit.SECONDS.toMillis(10L));
+             return session;
+         } catch (final JSchException ex) {

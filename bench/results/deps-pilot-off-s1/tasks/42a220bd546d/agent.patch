@@ -1,0 +1,16 @@
+diff --git a/pom.xml b/pom.xml
+index b93dfcf..cbe8f73 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -65,6 +65,11 @@
+             <artifactId>geoip2</artifactId>
+             <version>3.0.0</version>
+         </dependency>
++        <dependency>
++            <groupId>commons-codec</groupId>
++            <artifactId>commons-codec</artifactId>
++            <version>1.11</version>
++        </dependency>
+         <dependency>
+             <groupId>commons-validator</groupId>
+             <artifactId>commons-validator</artifactId>
